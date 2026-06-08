@@ -1,0 +1,67 @@
+data:
+  data_path: "data/raw"
+  window_size: 24
+  forecast_horizon: 6
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+
+models:
+  lstm:
+    hidden_size: 256
+    num_layers: 3
+    dropout: 0.3
+    use_attention: true
+    use_residual: true
+    bidirectional: false
+  
+  hybrid:
+    hidden_size: 256
+    num_layers: 3
+    dropout: 0.3
+    lstm_weight: 0.7
+    use_attention: true
+    use_tcn: true
+    use_ensemble: true
+  
+  transformer:
+    d_model: 256
+    nhead: 8
+    num_layers: 6
+    dim_feedforward: 1024
+    dropout: 0.1
+  
+  tcn:
+    num_channels: [64, 128, 256]
+    kernel_size: 3
+    dropout: 0.3
+  
+  xgboost:
+    n_estimators: 300
+    max_depth: 8
+    learning_rate: 0.05
+  
+  arima:
+    order: [2, 1, 2]
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  use_mixed_precision: true
+  use_lookahead: true
+  early_stopping_patience: 10
+  gradient_clip_norm: 1.0
+  weight_decay: 1e-4
+
+evaluation:
+  metrics: ["RMSE", "MAE", "MAPE", "R2", "Correlation"]
+  clinical_metrics: true
+  use_uncertainty: false
+
+output:
+  output_dir: "outputs"
+  model_dir: "outputs/models"
+  log_dir: "outputs/logs"
+  save_plots: true
+  save_predictions: true
